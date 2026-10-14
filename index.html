@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AniVerse AI — Find the anime that matches your imagination</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20%220%22%20%22100%22%20%22100%22><text y=%22.9em%22 font-size=%2290%22>🧬</text></svg>">
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo-group" onclick="location.reload()">
+        <div class="logo-icon">🧬</div>
+        <div class="logo-text">
+          <h1>AniVerse AI</h1>
+          <p>Find the anime that matches your imagination</p>
+        </div>
+      </div>
+
+      <nav class="nav-tabs">
+        <button class="nav-tab-btn active" data-tab="tab-discovery">
+          <span>✨</span> AI Discovery
+        </button>
+        <button class="nav-tab-btn" data-tab="tab-dna-studio">
+          <span>🧬</span> DNA Studio
+        </button>
+        <button class="nav-tab-btn" data-tab="tab-taste-blender">
+          <span>🧪</span> Taste Blender
+        </button>
+        <button class="nav-tab-btn" data-tab="tab-compare">
+          <span>⚖️</span> DNA Compare
+        </button>
+        <button class="nav-tab-btn" data-tab="tab-quiz">
+          <span>🎯</span> 30s DNA Quiz
+        </button>
+        <button class="nav-tab-btn" data-tab="tab-live-mal">
+          <span>🌐</span> Global Universe
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <button class="btn-pitch" id="btn-pitch-tour">
+          <span>🏆</span> Pitch Deck & Tour
+        </button>
+        <button class="btn-watchlist-badge" id="open-watchlist-btn">
+          <span>🔖 Watchlist</span>
+          <span class="badge-count" id="watchlist-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Application Content -->
+  <main class="main-content">
+
+    <!-- TAB 1: AI Natural Language Discovery Bar & Results -->
+    <div id="tab-discovery" class="tab-view active">
+      <section class="hero-section">
+        <div class="hero-pill">
+          <span>🧬</span> Powered by 8-Dimensional Anime DNA Vector Engine
+        </div>
+        <h2 class="hero-title">
+          What kind of anime does your <span>imagination</span> seek?
+        </h2>
+        <p class="hero-desc">
+          Speak in stories, character archetypes, emotions, or viewing limits. Our AI deconstructs your intent into multi-dimensional narrative vectors.
+        </p>
+
+        <!-- AI Discovery Search Bar -->
+        <div class="search-bar-wrapper">
+          <div class="search-input-box">
+            <span class="search-icon-symbol">🔍</span>
+            <input 
+              type="text" 
+              id="search-input" 
+              class="search-input" 
+              placeholder="e.g. Dark psychological thriller with an intelligent mastermind protagonist under 25 episodes..."
+              value="Dark psychological battle of wits with an intelligent mastermind protagonist under 25 episodes"
+            />
+            <button class="btn-search-trigger" id="search-btn">
+              <span>Synthesize</span> ⚡
+            </button>
+          </div>
+        </div>
+
+        <!-- Hackathon Showcase Chips -->
+        <div class="preset-chips-container" id="preset-chips">
+          <!-- Populated dynamically via /api/presets -->
+        </div>
+
+        <!-- Real-time Extracted Semantic Intent Banner -->
+        <div class="intent-banner" id="intent-banner" style="display:none;">
+          <div class="intent-left">
+            <span class="intent-badge">Detected Semantic Intent</span>
+            <span class="intent-text" id="intent-text">Synthesizing...</span>
+          </div>
+          <span style="font-size:0.75rem; color:#64748b;">Sub-millisecond Vector Inference</span>
+        </div>
+      </section>
+
+      <!-- Filter Controls Bar -->
+      <section class="filter-bar glass">
+        <div class="filter-left">
+          <span style="font-size:0.85rem; font-weight:600; color:#94a3b8;">Refine Constraints:</span>
+          <select id="genre-filter" class="filter-select">
+            <option value="">All Genres</option>
+            <option value="Psychological">Psychological</option>
+            <option value="Sci-Fi">Sci-Fi & Cyberpunk</option>
+            <option value="Mystery">Mystery & Thriller</option>
+            <option value="Drama">Drama & Emotional</option>
+            <option value="Action">Action & Combat</option>
+            <option value="Fantasy">Fantasy & Adventure</option>
+            <option value="Comedy">Comedy & Wholesome</option>
+          </select>
+
+          <select id="episode-filter" class="filter-select">
+            <option value="">Any Length</option>
+            <option value="13">≤ 13 Episodes (Quick Binge)</option>
+            <option value="26">≤ 26 Episodes (Standard Season)</option>
+            <option value="50">≤ 50 Episodes (Medium Saga)</option>
+          </select>
+        </div>
+
+        <div class="filter-right">
+          <span style="font-size:0.85rem; font-weight:600; color:#94a3b8;">Sort By:</span>
+          <select id="sort-filter" class="filter-select">
+            <option value="dna_match">🧬 Highest DNA Compatibility</option>
+            <option value="score">★ Community Score (MAL)</option>
+            <option value="episodes_asc">⏱️ Shortest First</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Anime Recommendation Cards Grid -->
+      <section class="anime-grid" id="anime-grid">
+        <!-- Rendered dynamically -->
+      </section>
+    </div>
+
+    <!-- TAB 2: Signature Innovation: Anime DNA Studio -->
+    <div id="tab-dna-studio" class="tab-view" style="display:none;">
+      <section class="hero-section">
+        <div class="hero-pill">
+          <span>🔬</span> The Signature Feature
+        </div>
+        <h2 class="hero-title">
+          Interactive <span>Anime DNA Studio</span>
+        </h2>
+        <p class="hero-desc">
+          Fine-tune your personal narrative preferences across 8 mathematical dimensions and watch your DNA spider chart recalibrate in real time.
+        </p>
+      </section>
+
+      <div class="dna-studio-section">
+        <!-- 8-Axis Radar Chart Display -->
+        <div class="dna-radar-card glass">
+          <h3 style="font-size:1.25rem; font-weight:700; color:#fff;">Live 8-Dimensional DNA Polygon</h3>
+          <p style="font-size:0.82rem; color:#94a3b8; margin-top:0.25rem;">Real-time geometric vector projection</p>
+
+          <div class="radar-canvas-wrap">
+            <canvas id="dna-radar-canvas" class="radar-canvas"></canvas>
+          </div>
+
+          <div style="font-size:0.78rem; color:#64748b; margin-top:0.5rem;">
+            Vector Norm: 8-Axis Weighted Metric • Real-time Cosine & Euclidean Fusion
+          </div>
+        </div>
+
+        <!-- DNA Sliders -->
+        <div class="dna-controls-card glass">
+          <h3 style="font-size:1.25rem; font-weight:700; color:#fff; margin-bottom:1.5rem;">
+            Calibrate Narrative Dimensions
+          </h3>
+
+          <!-- Slider: Narrative Complexity -->
+          <div class="dna-slider-group">
+            <div class="slider-label-row">
+              <span>🧠 Narrative Complexity & Mind Games</span>
+              <span class="slider-val-badge" id="val-complexity">75</span>
+            </div>
+            <input type="range" class="dna-range-slider" id="slider-complexity" min="10" max="100" value="75">
+            <div class="slider-sub-text">
+              <span>Straightforward Comfort</span>
+              <span>Mind-Bending Twists</span>
+            </div>
+          </div>
+
+          <!-- Slider: Emotional Depth -->
+          <div class="dna-slider-group">
+            <div class="slider-label-row">
+              <span>💧 Emotional Depth & Catharsis</span>
+              <span class="slider-val-badge" id="val-emotion">70</span>
+            </div>
+            <input type="range" class="dna-range-slider" id="slider-emotion" min="10" max="100" value="70">
+            <div class="slider-sub-text">
+              <span>Light Casual Fun</span>
+              <span>Existential Tear-Jerker</span>
+            </div>
+          </div>
+
+          <!-- Slider: Pacing Momentum -->
+          <div class="dna-slider-group">
+            <div class="slider-label-row">
+              <span>⚡ Pacing & Narrative Momentum</span>
+              <span class="slider-val-badge" id="val-pacing">80</span>
+            </div>
+            <input type="range" class="dna-range-slider" id="slider-pacing" min="10" max="100" value="80">
+            <div class="slider-sub-text">
+              <span>Atmospheric Slow-Burn</span>
+              <span>Breakneck High-Octane</span>
+            </div>
+          </div>
+
+          <!-- Slider: Darkness & Maturity -->
+          <div class="dna-slider-group">
+            <div class="slider-label-row">
+              <span>🌑 Darkness & Moral Ambiguity</span>
+              <span class="slider-val-badge" id="val-darkness">75</span>
+            </div>
+            <input type="range" class="dna-range-slider" id="slider-darkness" min="10" max="100" value="75">
+            <div class="slider-sub-text">
+              <span>Pure Wholesome</span>
+              <span>Grimdark / Seinen</span>
+            </div>
+          </div>
+
+          <!-- Slider: Action vs Intellect -->
+          <div class="dna-slider-group">
+            <div class="slider-label-row">
+              <span>⚔️ Action & Combat Intensity</span>
+              <span class="slider-val-badge" id="val-action">65</span>
+            </div>
+            <input type="range" class="dna-range-slider" id="slider-action" min="10" max="100" value="65">
+            <div class="slider-sub-text">
+              <span>Pure Dialogue / Strategy</span>
+              <span>Explosive Sakuga Battles</span>
+            </div>
+          </div>
+
+          <!-- Slider: World Building -->
+          <div class="dna-slider-group">
+            <div class="slider-label-row">
+              <span>🌌 World Building & Immersion</span>
+              <span class="slider-val-badge" id="val-world">80</span>
+            </div>
+            <input type="range" class="dna-range-slider" id="slider-world" min="10" max="100" value="80">
+            <div class="slider-sub-text">
+              <span>Contained Setting</span>
+              <span>Vast Deep Lore</span>
+            </div>
+          </div>
+
+          <button class="btn-search-trigger" id="btn-calibrate-search" style="width:100%; justify-content:center; margin-top:1.5rem;">
+            <span>Apply DNA Calibration to Discovery</span> ⚡
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Taste Cross-Referencing: The DNA Taste Blender -->
+    <div id="tab-taste-blender" class="tab-view" style="display:none;">
+      <section class="hero-section">
+        <div class="hero-pill">
+          <span>🧪</span> Vector Centroid Fusion
+        </div>
+        <h2 class="hero-title">
+          The <span>Taste Blender</span>
+        </h2>
+        <p class="hero-desc">
+          Combine 2 of your favorite anime to synthesize their DNA centroid and discover hidden gems that bridge their exact storytelling styles.
+        </p>
+      </section>
+
+      <section class="blender-section glass">
+        <h3 style="font-size:1.25rem; font-weight:700; color:#fff; margin-bottom:1rem;">
+          Select Two Anchor Titles
+        </h3>
+
+        <div style="display:flex; justify-content:center; align-items:center; gap:1.5rem; flex-wrap:wrap; margin-bottom:2rem;">
+          <div style="min-width:280px; text-align:left;">
+            <label style="font-size:0.82rem; color:#94a3b8; display:block; margin-bottom:6px;">First Anchor Anime:</label>
+            <select id="blend-select-1" class="filter-select" style="width:100%; padding:0.75rem;">
+              <!-- options loaded dynamically -->
+            </select>
+          </div>
+
+          <div style="font-size:1.8rem; color:#00f2fe; font-weight:800; margin-top:1rem;">+</div>
+
+          <div style="min-width:280px; text-align:left;">
+            <label style="font-size:0.82rem; color:#94a3b8; display:block; margin-bottom:6px;">Second Anchor Anime:</label>
+            <select id="blend-select-2" class="filter-select" style="width:100%; padding:0.75rem;">
+              <!-- options loaded dynamically -->
+            </select>
+          </div>
+        </div>
+
+        <button class="btn-search-trigger" id="btn-execute-blend" style="margin: 0 auto;">
+          <span>Synthesize Taste Centroid</span> 🧬
+        </button>
+
+        <div style="margin-top:3rem;">
+          <h4 style="font-size:1.1rem; color:#00f2fe; margin-bottom:1.5rem; text-align:left;">
+            ✨ Intersection Titles (Closest DNA Siblings)
+          </h4>
+          <div class="anime-grid" id="blend-results-grid">
+            <p style="grid-column: 1 / -1; color:#64748b; padding:2rem;">Select two titles above and click Synthesize to reveal intersection gems.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB: Side-by-Side Anime DNA Comparator -->
+    <div id="tab-compare" class="tab-view" style="display:none;">
+      <section class="hero-section">
+        <div class="hero-pill">
+          <span>⚖️</span> Vector Differential Analysis
+        </div>
+        <h2 class="hero-title">
+          Side-by-Side <span>DNA Comparator</span>
+        </h2>
+        <p class="hero-desc">
+          Compare any two series in 8-dimensional narrative space. Inspect overlaid dual-polygon radar charts, overlap percentages, and exact dimensional divergences.
+        </p>
+      </section>
+
+      <section class="glass" style="padding:2rem; margin-bottom:2.5rem;">
+        <div style="display:flex; justify-content:center; align-items:center; gap:1.5rem; flex-wrap:wrap; margin-bottom:2rem;">
+          <div style="min-width:300px; text-align:left;">
+            <label style="font-size:0.85rem; color:#00f2fe; display:block; margin-bottom:6px; font-weight:700;">First Anime (Cyan):</label>
+            <select id="compare-select-1" class="filter-select" style="width:100%; padding:0.75rem;">
+              <!-- options loaded dynamically -->
+            </select>
+          </div>
+
+          <div style="font-size:1.5rem; color:#94a3b8; font-weight:800; margin-top:1.2rem;">VS</div>
+
+          <div style="min-width:300px; text-align:left;">
+            <label style="font-size:0.85rem; color:#ff0080; display:block; margin-bottom:6px; font-weight:700;">Second Anime (Pink):</label>
+            <select id="compare-select-2" class="filter-select" style="width:100%; padding:0.75rem;">
+              <!-- options loaded dynamically -->
+            </select>
+          </div>
+        </div>
+
+        <button class="btn-search-trigger" id="btn-execute-compare" style="margin: 0 auto 2rem;">
+          <span>Execute DNA Differential Comparison</span> ⚖️
+        </button>
+
+        <div id="compare-result-container" style="display:none;">
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:2rem; align-items:start;">
+            <!-- Overlaid Dual Polygon Radar -->
+            <div style="background:rgba(15,17,29,0.8); border:1px solid var(--border-subtle); border-radius:12px; padding:1.5rem; text-align:center;">
+              <h4 style="font-size:1.1rem; color:#fff; margin-bottom:0.25rem;">Overlaid Narrative Polygons</h4>
+              <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:1rem;">Visualizing vector area differences</p>
+              <div class="radar-canvas-wrap" style="max-width:380px; margin:0 auto;">
+                <canvas id="compare-radar-canvas" class="radar-canvas"></canvas>
+              </div>
+            </div>
+
+            <!-- Comparison Insights & Deltas -->
+            <div style="background:rgba(15,17,29,0.8); border:1px solid var(--border-subtle); border-radius:12px; padding:1.5rem;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                <h4 style="font-size:1.1rem; color:#fff;">Narrative Overlap</h4>
+                <div class="compatibility-pill" id="compare-overlap-pill" style="font-size:0.85rem;">
+                  --% Overlap
+                </div>
+              </div>
+
+              <div style="background:rgba(255,255,255,0.03); border-left:3px solid var(--accent-cyan); padding:1rem; border-radius:4px; font-size:0.88rem; color:#e2e8f0; line-height:1.5; margin-bottom:1.5rem;" id="compare-summary-text">
+                <!-- Populated dynamically -->
+              </div>
+
+              <h5 style="font-size:0.9rem; color:#fbbf24; margin-bottom:0.75rem;">Key Stylistic Divergences</h5>
+              <div id="compare-divergences-list" style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:1.5rem;">
+                <!-- Populated dynamically -->
+              </div>
+
+              <h5 style="font-size:0.9rem; color:#94a3b8; margin-bottom:0.75rem;">Dimension Breakdown (Δ Delta)</h5>
+              <div id="compare-deltas-table" style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.78rem;">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB: 30-Second Anime DNA Quiz -->
+    <div id="tab-quiz" class="tab-view" style="display:none;">
+      <section class="hero-section">
+        <div class="hero-pill">
+          <span>🎯</span> Instant Onboarding
+        </div>
+        <h2 class="hero-title">
+          30-Second <span>Anime DNA Quiz</span>
+        </h2>
+        <p class="hero-desc">
+          Not sure what you are looking for? Answer 4 quick questions about your emotional and storytelling desires to generate your personalized Anime DNA!
+        </p>
+      </section>
+
+      <section class="glass" style="max-width:800px; margin:0 auto; padding:2.5rem;">
+        <form id="quiz-form">
+          <!-- Question 1 -->
+          <div style="margin-bottom:2rem;">
+            <label style="font-size:1.05rem; font-weight:700; color:#fff; display:block; margin-bottom:0.75rem;">
+              1. What kind of atmosphere or core emotion do you want to experience?
+            </label>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+              <label style="display:flex; align-items:center; gap:0.75rem; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); padding:0.85rem 1rem; border-radius:10px; cursor:pointer;">
+                <input type="radio" name="quiz-mood" value="mind_games" checked>
+                <div>
+                  <strong style="color:#00f2fe; font-size:0.9rem; display:block;">Mind Games & Chess Battle</strong>
+                  <span style="font-size:0.75rem; color:#94a3b8;">High stakes, calculating masterminds</span>
+                </div>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.75rem; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); padding:0.85rem 1rem; border-radius:10px; cursor:pointer;">
+                <input type="radio" name="quiz-mood" value="hype_action">
+                <div>
+                  <strong style="color:#ff0080; font-size:0.9rem; display:block;">Adrenaline Hype & Sakuga</strong>
+                  <span style="font-size:0.75rem; color:#94a3b8;">Explosive battles, non-stop kinetic combat</span>
+                </div>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.75rem; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); padding:0.85rem 1rem; border-radius:10px; cursor:pointer;">
+                <input type="radio" name="quiz-mood" value="emotional_journey">
+                <div>
+                  <strong style="color:#10b981; font-size:0.9rem; display:block;">Poignant Emotional Resonance</strong>
+                  <span style="font-size:0.75rem; color:#94a3b8;">Catharsis, deep empathy, tear-jerker</span>
+                </div>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.75rem; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); padding:0.85rem 1rem; border-radius:10px; cursor:pointer;">
+                <input type="radio" name="quiz-mood" value="deep_mystery">
+                <div>
+                  <strong style="color:#c084fc; font-size:0.9rem; display:block;">Deep Lore & Philosophical Mystery</strong>
+                  <span style="font-size:0.75rem; color:#94a3b8;">Intricate world-building and existential dread</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Question 2 -->
+          <div style="margin-bottom:2rem;">
+            <label style="font-size:1.05rem; font-weight:700; color:#fff; display:block; margin-bottom:0.75rem;">
+              2. How complex do you want the narrative twists to be?
+            </label>
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:0.75rem;">
+              <label style="display:flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); padding:0.75rem; border-radius:8px; cursor:pointer;">
+                <input type="radio" name="quiz-complexity" value="mind_bending" checked>
+                <span style="font-size:0.85rem; color:#e2e8f0;">Mind-Bending Twists</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); padding:0.75rem; border-radius:8px; cursor:pointer;">
+                <input type="radio" name="quiz-complexity" value="moderate">
+                <span style="font-size:0.85rem; color:#e2e8f0;">Engaging Balance</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); padding:0.75rem; border-radius:8px; cursor:pointer;">
+                <input type="radio" name="quiz-complexity" value="straightforward">
+                <span style="font-size:0.85rem; color:#e2e8f0;">Straightforward Comfort</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Question 3 -->
+          <div style="margin-bottom:2rem;">
+            <label style="font-size:1.05rem; font-weight:700; color:#fff; display:block; margin-bottom:0.75rem;">
+              3. Desired pacing and narrative tempo?
+            </label>
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:0.75rem;">
+              <label style="display:flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); padding:0.75rem; border-radius:8px; cursor:pointer;">
+                <input type="radio" name="quiz-pacing" value="breakneck" checked>
+                <span style="font-size:0.85rem; color:#e2e8f0;">Breakneck Binge</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); padding:0.75rem; border-radius:8px; cursor:pointer;">
+                <input type="radio" name="quiz-pacing" value="balanced">
+                <span style="font-size:0.85rem; color:#e2e8f0;">Balanced Rhythms</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); padding:0.75rem; border-radius:8px; cursor:pointer;">
+                <input type="radio" name="quiz-pacing" value="slow_burn">
+                <span style="font-size:0.85rem; color:#e2e8f0;">Atmospheric Slow-Burn</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Question 4 -->
+          <div style="margin-bottom:2.5rem;">
+            <label style="font-size:1.05rem; font-weight:700; color:#fff; display:block; margin-bottom:0.75rem;">
+              4. Viewing commitment budget?
+            </label>
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:0.75rem;">
+              <label style="display:flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); padding:0.75rem; border-radius:8px; cursor:pointer;">
+                <input type="radio" name="quiz-budget" value="under_13">
+                <span style="font-size:0.85rem; color:#e2e8f0;">Quick (≤13 eps)</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); padding:0.75rem; border-radius:8px; cursor:pointer;">
+                <input type="radio" name="quiz-budget" value="under_26" checked>
+                <span style="font-size:0.85rem; color:#e2e8f0;">Standard Season (≤26 eps)</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); padding:0.75rem; border-radius:8px; cursor:pointer;">
+                <input type="radio" name="quiz-budget" value="long_epic">
+                <span style="font-size:0.85rem; color:#e2e8f0;">Long Epic (50+ eps)</span>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-search-trigger" style="width:100%; justify-content:center; padding:1rem;">
+            <span>Synthesize My Anime DNA & Reveal Matches</span> 🎯
+          </button>
+        </form>
+      </section>
+    </div>
+
+    <!-- TAB 4: Live Global Universe Search (Jikan MAL API) -->
+    <div id="tab-live-mal" class="tab-view" style="display:none;">
+      <section class="hero-section">
+        <div class="hero-pill">
+          <span>🌐</span> Real-Time External Catalog Sync
+        </div>
+        <h2 class="hero-title">
+          Search the Entire <span>Global Universe</span>
+        </h2>
+        <p class="hero-desc">
+          Search any anime ever created on MyAnimeList. AniVerse AI will parse its metadata and synthesize an 8D Anime DNA vector on the fly!
+        </p>
+
+        <div class="search-bar-wrapper">
+          <div class="search-input-box">
+            <span class="search-icon-symbol">🌐</span>
+            <input 
+              type="text" 
+              id="external-search-input" 
+              class="search-input" 
+              placeholder="Search any anime title across the global MyAnimeList database (e.g. Bleach, Naruto, Vinland)..."
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="anime-grid" id="external-results-grid">
+        <p style="grid-column: 1 / -1; text-align:center; color:#64748b; padding:3rem;">
+          Type an anime title in the search box above to fetch live data from the Jikan MAL API.
+        </p>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- Anime Details Modal -->
+  <div class="modal-overlay" id="detail-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title" style="color:#fff; font-size:1.2rem; font-weight:700;">Anime DNA Breakdown</h3>
+        <button class="modal-close-btn" id="detail-modal-close">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body-content">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Watchlist & Binge Calculator Modal -->
+  <div class="modal-overlay" id="watchlist-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="color:#fff; font-size:1.2rem; font-weight:700;">🔖 My Anime Watchlist & Binge Schedule</h3>
+        <button class="modal-close-btn" id="watchlist-modal-close">&times;</button>
+      </div>
+      <div class="modal-body" id="watchlist-modal-body">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Hackathon Pitch & Architecture Tour Overlay -->
+  <div class="pitch-overlay" id="pitch-overlay">
+    <div class="pitch-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <span id="pitch-slide-tag" style="font-size:0.75rem; font-weight:800; color:#00f2fe; letter-spacing:1px; text-transform:uppercase;"></span>
+        <button id="pitch-close-btn" style="background:transparent; border:none; color:#64748b; font-size:1.5rem; cursor:pointer;">&times;</button>
+      </div>
+
+      <div class="pitch-progress" id="pitch-progress-pills"></div>
+
+      <h2 id="pitch-slide-title" style="font-size:2rem; font-weight:800; color:#fff; line-height:1.2; margin-bottom:0.4rem;"></h2>
+      <h3 id="pitch-slide-sub" style="font-size:1.05rem; font-weight:500; color:#c084fc; margin-bottom:1.5rem;"></h3>
+
+      <div id="pitch-slide-body"></div>
+
+      <div class="pitch-nav">
+        <button class="btn-action-primary" id="pitch-prev-btn" style="max-width:140px;">
+          ← Previous
+        </button>
+        <button class="btn-search-trigger" id="pitch-next-btn">
+          Next Slide →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Core Scripts -->
+  <script src="/static/js/dna_radar.js"></script>
+  <script src="/static/js/watchlist.js"></script>
+  <script src="/static/js/pitch_mode.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
