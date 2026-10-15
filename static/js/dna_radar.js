@@ -46,10 +46,16 @@ class DNARadarChart {
   }
 
   update(values, animate = true) {
-    if (!this.canvas) return;
-    this.targetValues = [...values];
+    if (!this.canvas || !values) return;
+
+    let arr = values;
+    if (!Array.isArray(values) && typeof values === 'object') {
+      arr = this.dimensions.map(d => typeof values[d.key] === 'number' ? values[d.key] : 50);
+    }
+
+    this.targetValues = Array.isArray(arr) ? [...arr] : [50, 50, 50, 50, 50, 50, 50, 50];
     if (!animate) {
-      this.currentValues = [...values];
+      this.currentValues = [...this.targetValues];
       this.draw(this.currentValues);
       return;
     }

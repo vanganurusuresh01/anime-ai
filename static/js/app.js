@@ -150,7 +150,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Update Radar
       if (radarChart && data.target_dna) {
-        radarChart.update(data.target_dna);
+        try {
+          radarChart.update(data.target_dna);
+        } catch (radarErr) {
+          console.warn('Radar update error:', radarErr);
+        }
       }
 
       renderCards(currentResults);
@@ -867,7 +871,11 @@ document.addEventListener('DOMContentLoaded', () => {
           intentText.textContent = `🎯 Quiz Result Profile: ${mood.replace('_', ' ').toUpperCase()} | Pacing: ${pacing.toUpperCase()}`;
         }
         if (radarChart && data.target_dna) {
-          radarChart.update(data.target_dna);
+          try {
+            radarChart.update(data.target_dna);
+          } catch (radarErr) {
+            console.warn('Radar update error:', radarErr);
+          }
         }
         renderCards(currentResults);
         showToast('Found tailored anime matches based on your Quiz!', 'info');
